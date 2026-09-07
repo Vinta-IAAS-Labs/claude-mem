@@ -1,11 +1,9 @@
 import type { PlatformAdapter, NormalizedHookInput, HookResult } from '../types.js';
 import { AdapterRejectedInput, isValidCwd } from './errors.js';
 
-// Raw adapter passes through with minimal transformation - useful for testing
 export const rawAdapter: PlatformAdapter = {
   normalizeInput(raw) {
     const r = (raw ?? {}) as any;
-    // Plan 05 Phase 6 — cwd validation at the adapter boundary.
     const cwd = r.cwd ?? process.cwd();
     if (!isValidCwd(cwd)) {
       throw new AdapterRejectedInput('invalid_cwd');
@@ -17,6 +15,7 @@ export const rawAdapter: PlatformAdapter = {
       toolName: r.toolName ?? r.tool_name,
       toolInput: r.toolInput ?? r.tool_input,
       toolResponse: r.toolResponse ?? r.tool_response,
+      toolUseId: r.toolUseId ?? r.tool_use_id,
       transcriptPath: r.transcriptPath ?? r.transcript_path,
       filePath: r.filePath ?? r.file_path,
       edits: r.edits,
